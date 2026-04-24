@@ -9,10 +9,13 @@ LAYOUT_PID=$!
 
 # Wait for layout server to be ready
 echo "Waiting for layout server..."
-for i in $(seq 1 30); do
+for i in $(seq 1 120); do
     if curl -s http://localhost:8830/health > /dev/null 2>&1; then
         echo "Layout server ready."
         break
+    fi
+    if [ $i -eq 120 ]; then
+        echo "WARNING: Layout server not ready after 240s, continuing anyway..."
     fi
     sleep 2
 done

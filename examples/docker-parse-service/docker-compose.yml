@@ -7,6 +7,7 @@ services:
       - "8080:8080"
     environment:
       - LAYOUT_SERVER_URL=http://localhost:8830/layout
+      - PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True
     volumes:
       - /tmp/liteparse:/tmp/liteparse
     restart: unless-stopped
