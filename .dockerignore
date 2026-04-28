@@ -1,0 +1,22 @@
+# Exclude host-built artifacts that would clobber what's built inside the image.
+# Critical: host .venv has python symlinks pointing to the host filesystem and
+# breaks the in-image venv when COPY merges them in.
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+
+# Node artifacts (image runs `npm ci` itself).
+**/node_modules
+**/dist
+
+# Editor / OS noise
+.git
+.gitignore
+.DS_Store
+*.swp
+*.swo
+.idea
+.vscode

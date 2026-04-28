@@ -8,7 +8,10 @@ services:
     environment:
       - LAYOUT_SERVER_URL=http://localhost:8830/layout
       - PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True
+      - LAYOUT_TIMEOUT_SECS=600
     volumes:
+      # Cache PaddleX models across container restarts.
+      - paddle_models:/root/.paddlex
       - /tmp/liteparse:/tmp/liteparse
     restart: unless-stopped
     healthcheck:
@@ -16,4 +19,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 120s
+      # Long start_period: first run downloads PaddleX models (~few hundred MB).
+      start_period: 600s
+
+volumes:
+  paddle_models:

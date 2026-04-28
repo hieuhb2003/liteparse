@@ -67,7 +67,10 @@ async def parse(file: UploadFile = File(...)) -> ParseResponse:
             for p in data.get("pages", [])
         ]
 
-        return ParseResponse(text=data.get("text", ""), pages=pages)
+        # `lit parse --format json` leaves top-level `text` empty; build it
+        # from per-page text so callers always get the full document text.
+        full_text = data.get("text") or "\n\n".join(p["text"] for p in pages if p["text"])
+        return ParseResponse(text=full_text, pages=pages)
 
     except subprocess.TimeoutExpired:
         raise HTTPException(status_code=504, detail="Parse timed out (300s)")
